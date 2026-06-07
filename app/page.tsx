@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 const TOTAL_FRAMES = 72;
 const stations = [
@@ -60,8 +60,10 @@ function framePath(index: number) {
 
 export default function Home() {
   const [frameIndex, setFrameIndex] = useState(1);
-
-  const frames = useMemo(
+const audioRef = useRef<HTMLAudioElement>(null);
+const [started, setStarted] = useState(false);
+const [isPlaying, setIsPlaying] = useState(false);
+const frames = useMemo(
     () => Array.from({ length: TOTAL_FRAMES }, (_, i) => framePath(i + 1)),
     []
   );
@@ -94,6 +96,22 @@ export default function Home() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 const currentStation = getCurrentStation(frameIndex);
+const startExperience = () => {
+  audioRef.current?.play();
+  setStarted(true);
+  setIsPlaying(true);
+};
+const toggleMusic = () => {
+  if (!audioRef.current) return;
+
+  if (audioRef.current.paused) {
+    audioRef.current.play();
+    setIsPlaying(true);
+  } else {
+    audioRef.current.pause();
+    setIsPlaying(false);
+  }
+};
   return (
     <main className="min-h-[500vh] bg-white">
       <section className="sticky top-0 flex h-screen items-center justify-center overflow-hidden">
@@ -116,10 +134,17 @@ const currentStation = getCurrentStation(frameIndex);
   <p className="mt-4 whitespace-nowrap text-[10px] font-medium uppercase tracking-[0.18em] text-zinc-400">
   {currentStation.concepts}
 </p>
-<audio controls className="mt-5 w-full">
-  <source src="/audio/gymnopedie.mp3" type="audio/mpeg" />
-  Tu navegador no puede reproducir este audio.
-</audio>
+<audio ref={audioRef} src="/audio/gymnopedie.mp3" preload="auto" />
+
+<button
+  type="button"
+  onClick={started ? toggleMusic : startExperience}
+  className="mt-5 rounded-full bg-zinc-900 px-5 py-2 text-sm font-medium text-white shadow-sm transition hover:bg-zinc-700"
+>
+  {started
+    ? (isPlaying ? "Pausar música" : "Reanudar música")
+    : "Comenzar recorrido"}
+</button>
 </div>
 </div>
         <img
