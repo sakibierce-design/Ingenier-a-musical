@@ -48,7 +48,7 @@ export default function Home() {
   return (
     <main className="min-h-[500vh] bg-white">
       <section className="sticky top-0 flex h-screen items-center justify-center overflow-hidden">
-        <div className="absolute top-10 left-1/2 -translate-x-1/2 text-center z-10">
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 text-center z-10 bg-white/95 px-6 py-1 rounded-xl">
   <p className="text-sm uppercase tracking-[0.35em] text-zinc-500">
     Un viaje visual a través de la mecánica, la precisión y la armonía
   </p>
@@ -59,9 +59,8 @@ export default function Home() {
         <img
           src={framePath(frameIndex)}
           alt={`Animación de piano frame ${frameIndex}`}
-          className="max-h-[80vh] max-w-[90vw] object-contain"
-        />
-
+          className="max-h-[60vh] max-w-[65vw] object-contain"
+/>
         <div className="absolute bottom-8 left-1/2 -translate-x-1/2 rounded-full bg-black/70 px-4 py-2 text-sm text-white">
           Frame {frameIndex} / {TOTAL_FRAMES}
         </div>
