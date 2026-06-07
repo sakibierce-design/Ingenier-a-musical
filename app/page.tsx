@@ -67,6 +67,14 @@ const frames = useMemo(
     () => Array.from({ length: TOTAL_FRAMES }, (_, i) => framePath(i + 1)),
     []
   );
+ useEffect(() => {
+  if ("scrollRestoration" in window.history) {
+    window.history.scrollRestoration = "manual";
+  }
+
+  window.scrollTo(0, 0);
+  setFrameIndex(1);
+}, []);
 
   useEffect(() => {
     frames.forEach((src) => {
@@ -123,6 +131,7 @@ const toggleMusic = () => {
     Ingeniería musical: el alma de un piano
   </h1>
   <div className="mt-6 max-w-md rounded-xl border border-zinc-200 bg-white/80 p-5 text-left shadow-sm backdrop-blur-sm">
+  
   <p className="text-sm font-semibold text-zinc-900">
     {currentStation.title}
   </p>
@@ -134,6 +143,7 @@ const toggleMusic = () => {
   <p className="mt-4 whitespace-nowrap text-[10px] font-medium uppercase tracking-[0.18em] text-zinc-400">
   {currentStation.concepts}
 </p>
+
 <audio ref={audioRef} src="/audio/gymnopedie.mp3" preload="auto" />
 
 <button
